@@ -54,17 +54,11 @@ export default function Navigation() {
     bootstrapAsync();
   }, []);
 
-  const login = async (spotifyToken: string) => {
-    dispatchAuth({ type: AuthActionTypes.LOG_IN, spotifyToken });
-  };
-  const logout = () => dispatchAuth({ type: AuthActionTypes.LOG_OUT });
-
   return (
     <AuthContext.Provider
       value={{
         authState,
-        login,
-        logout,
+        dispatchAuth,
       }}
     >
       <NavigationContainer linking={LinkingConfiguration}>

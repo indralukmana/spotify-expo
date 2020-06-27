@@ -22,6 +22,5 @@ export type AuthState = {
 
 export type AuthenticationContextType = {
   authState: AuthState;
-  login: (spotifyToken: string) => void;
-  logout: () => void;
+  dispatchAuth: React.Dispatch<AuthAction>;
 };
