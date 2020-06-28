@@ -14,11 +14,17 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import HomeScreen from "../screens/HomeScreen";
 
-const AuthContext = React.createContext({} as AuthenticationContextType);
+export const AuthContext = React.createContext({} as AuthenticationContextType);
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function Navigation() {
+  const initialAuthState: AuthState = {
+    isLoading: false,
+    spotifyToken: null,
+    userData: null,
+  };
+
   const [authState, dispatchAuth] = React.useReducer(
     (prevState: AuthState, action: AuthAction): AuthState => {
       switch (action.type) {
@@ -26,21 +32,24 @@ export default function Navigation() {
           return {
             ...prevState,
             spotifyToken: action.spotifyToken,
+            userData: action.userData,
             isLoading: false,
           };
         case AuthActionTypes.LOG_OUT:
           return {
             ...prevState,
             spotifyToken: null,
+            userData: null,
           };
       }
     },
-    { isLoading: false, spotifyToken: "" }
+    initialAuthState
   );
 
   React.useEffect(() => {
     const bootstrapAsync = async () => {
       let spotifyToken = null;
+      let userData = null;
 
       try {
         spotifyToken = await SecureStore.getItemAsync("spotify_token");
@@ -48,7 +57,7 @@ export default function Navigation() {
         // Restoring token failed
       }
 
-      dispatchAuth({ type: AuthActionTypes.LOG_IN, spotifyToken });
+      dispatchAuth({ type: AuthActionTypes.LOG_IN, spotifyToken, userData });
     };
 
     bootstrapAsync();
