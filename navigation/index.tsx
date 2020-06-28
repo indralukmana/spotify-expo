@@ -1,5 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import * as React from "react";
 import * as SecureStore from "expo-secure-store";
 
@@ -13,10 +15,12 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import HomeScreen from "../screens/HomeScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 export const AuthContext = React.createContext({} as AuthenticationContextType);
 
 const Stack = createStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator();
 
 export default function Navigation() {
   const initialAuthState: AuthState = {
@@ -72,13 +76,10 @@ export default function Navigation() {
     >
       <NavigationContainer linking={LinkingConfiguration}>
         {authState.spotifyToken ? (
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-              name="HomeScreen"
-              component={HomeScreen}
-              options={{ title: "Login" }}
-            />
-          </Stack.Navigator>
+          <Tab.Navigator>
+            <Tab.Screen name="HomeScreen" component={HomeScreen} />
+            <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
+          </Tab.Navigator>
         ) : (
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen

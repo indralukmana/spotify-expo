@@ -1,8 +1,6 @@
 import * as React from "react";
 import tailwind from "tailwind-rn";
 
-import { RectButton } from "react-native-gesture-handler";
-
 import * as WebBrowser from "expo-web-browser";
 import * as SecureStore from "expo-secure-store";
 
@@ -11,7 +9,7 @@ import {
   useAuthRequest,
   ResponseType,
 } from "expo-auth-session";
-import { Platform, View, Text } from "react-native";
+import { Platform, View, Text, Button } from "react-native";
 import { getProfile } from "../services/user-api";
 import { AuthContext } from "../navigation";
 import { AuthActionTypes } from "../types";
@@ -47,6 +45,8 @@ export default function LoginScreen() {
   );
 
   React.useEffect(() => {
+    let mounted = true;
+
     const doLogin = async (spotifyToken: string) => {
       try {
         const userData = await getProfile(spotifyToken);
@@ -60,28 +60,23 @@ export default function LoginScreen() {
       }
     };
 
-    if (response && response.type === "success") {
+    if (mounted && response && response.type === "success") {
       const spotifyToken = response.params.access_token;
       if (Platform.OS !== "web") {
         SecureStore.setItemAsync("spotify_token", spotifyToken);
       }
       doLogin(spotifyToken);
     }
+
+    return () => {
+      mounted = false;
+    };
   }, [response]);
 
   return (
     <View style={tailwind("flex-1 justify-center items-center")}>
       <Text style={tailwind("font-bold mb-20")}>Spotify Expo</Text>
-      <RectButton
-        onPress={() => promptAsync({ useProxy: false })}
-        activeOpacity={0}
-      >
-        <View
-          style={tailwind("py-3 px-2 rounded-lg text-center bg-yellow-500")}
-        >
-          <Text>Login</Text>
-        </View>
-      </RectButton>
+      <Button title="Log In" onPress={() => promptAsync({ useProxy: false })} />
     </View>
   );
 }
