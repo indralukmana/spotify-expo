@@ -9,10 +9,11 @@ import {
   useAuthRequest,
   ResponseType,
 } from "expo-auth-session";
+
 import { Platform, View, Text, Button } from "react-native";
 import { getProfile } from "../services/user-api";
-import { AuthContext } from "../navigation";
 import { AuthActionTypes } from "../types";
+import { AuthContext } from "../Context/AuthenticationContext";
 
 WebBrowser.maybeCompleteAuthSession();
 

@@ -5,19 +5,19 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import * as SecureStore from "expo-secure-store";
 
-import LoginScreen from "../screens/LoginScreen";
 import {
   RootStackParamList,
   AuthState,
   AuthAction,
   AuthActionTypes,
-  AuthenticationContextType,
 } from "../types";
+
 import LinkingConfiguration from "./LinkingConfiguration";
+import LoginScreen from "../screens/LoginScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-
-export const AuthContext = React.createContext({} as AuthenticationContextType);
+import { getProfile } from "../services/user-api";
+import { AuthContext } from "../Context/AuthenticationContext";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -57,6 +57,9 @@ export default function Navigation() {
 
       try {
         spotifyToken = await SecureStore.getItemAsync("spotify_token");
+        if (spotifyToken) {
+          userData = await getProfile(spotifyToken);
+        }
       } catch (e) {
         // Restoring token failed
       }

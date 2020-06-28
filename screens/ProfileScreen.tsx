@@ -2,8 +2,8 @@ import * as React from "react";
 import tailwind, { getColor } from "tailwind-rn";
 
 import { View, Text, Button } from "react-native";
-import { AuthContext } from "../navigation";
 import { AuthActionTypes } from "../types";
+import { AuthContext } from "../Context/AuthenticationContext";
 
 export default function ProfileScreen() {
   const { dispatchAuth } = React.useContext(AuthContext);
