@@ -12,6 +12,9 @@ import {
   ResponseType,
 } from "expo-auth-session";
 import { Platform, View, Text } from "react-native";
+import { getProfile } from "../services/user-api";
+import { AuthContext } from "../navigation";
+import { AuthActionTypes } from "../types";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -19,12 +22,20 @@ WebBrowser.maybeCompleteAuthSession();
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
 };
+
 export default function LoginScreen() {
+  const { dispatchAuth } = React.useContext(AuthContext);
+  const [loginError, setLoginError] = React.useState<Error | null>(null);
+
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
       clientId: "d949b5b3d39a4b88b79564b5312971f1",
-      scopes: ["user-read-email", "playlist-modify-public"],
+      scopes: [
+        "user-read-email",
+        "playlist-modify-public",
+        "user-read-private",
+      ],
       usePKCE: false,
       redirectUri: makeRedirectUri({
         native: "https://auth.expo.io/@indralukmana/spotify-app",
@@ -36,12 +47,25 @@ export default function LoginScreen() {
   );
 
   React.useEffect(() => {
-    if (response && response.type === "success") {
-      const token = response.params.access_token;
-      if (Platform.OS !== "web") {
-        // Securely store the auth on your device
-        SecureStore.setItemAsync("spotify_token", token);
+    const doLogin = async (spotifyToken: string) => {
+      try {
+        const userData = await getProfile(spotifyToken);
+        dispatchAuth({
+          type: AuthActionTypes.LOG_IN,
+          spotifyToken,
+          userData,
+        });
+      } catch (error) {
+        setLoginError(error);
       }
+    };
+
+    if (response && response.type === "success") {
+      const spotifyToken = response.params.access_token;
+      if (Platform.OS !== "web") {
+        SecureStore.setItemAsync("spotify_token", spotifyToken);
+      }
+      doLogin(spotifyToken);
     }
   }, [response]);
 
