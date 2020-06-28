@@ -2,6 +2,16 @@ export type RootStackParamList = {
   LoginScreen: undefined;
 };
 
+export type HomeStackParamList = {
+  HomeScreen: undefined;
+  PlaylistScreen: { playlistId: string };
+};
+
+export type HomeTabParamList = {
+  HomeStack: undefined;
+  ProfileScreen: undefined;
+};
+
 export enum AuthActionTypes {
   LOG_IN = "LOG_IN",
   LOG_OUT = "LOG_OUT",

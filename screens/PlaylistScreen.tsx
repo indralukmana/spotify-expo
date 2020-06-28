@@ -9,14 +9,11 @@ import {
   Image,
 } from "react-native";
 import { getFeaturedPlaylists } from "../services/browse-api";
-import { FeaturedPlaylist, HomeStackParamList } from "../types";
+import { FeaturedPlaylist } from "../types";
 import { AuthContext } from "../Context/AuthenticationContext";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
-import { StackScreenProps } from "@react-navigation/stack";
 
-type HomeScreenProps = StackScreenProps<HomeStackParamList, "HomeScreen">;
-
-export default function HomeScreen({ navigation }: HomeScreenProps) {
+export default function PlaylistScreen() {
   const { authState } = React.useContext(AuthContext);
   const initialState = {
     isLoading: true,
@@ -75,13 +72,10 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   return (
     <SafeAreaView style={tailwind("flex-1 justify-center items-center")}>
-      <Text style={tailwind("font-bold mb-20")}>Spotify Expo Home</Text>
+      <Text style={tailwind("font-bold mb-20")}>Playlist</Text>
       <ScrollView style={tailwind("flex-1 w-full")}>
         {homeScreenState.data.map((playlist, index) => (
           <RectButton
-            onPress={() =>
-              navigation.navigate("PlaylistScreen", { playlistId: playlist.id })
-            }
             style={tailwind(
               `w-full py-10 px-5 ${
                 index % 2 === 0 ? "bg-blue-200" : "bg-yellow-200"

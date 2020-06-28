@@ -7,6 +7,8 @@ import * as SecureStore from "expo-secure-store";
 
 import {
   RootStackParamList,
+  HomeStackParamList,
+  HomeTabParamList,
   AuthState,
   AuthAction,
   AuthActionTypes,
@@ -18,9 +20,18 @@ import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { getProfile } from "../services/user-api";
 import { AuthContext } from "../Context/AuthenticationContext";
+import PlaylistScreen from "../screens/PlaylistScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
-const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator<HomeStackParamList>();
+const HomeTab = createBottomTabNavigator<HomeTabParamList>();
+
+const HomeStackNavigator = () => (
+  <HomeStack.Navigator initialRouteName="HomeScreen">
+    <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
+    <HomeStack.Screen name="PlaylistScreen" component={PlaylistScreen} />
+  </HomeStack.Navigator>
+);
 
 export default function Navigation() {
   const initialAuthState: AuthState = {
@@ -79,10 +90,10 @@ export default function Navigation() {
     >
       <NavigationContainer linking={LinkingConfiguration}>
         {authState.spotifyToken ? (
-          <Tab.Navigator>
-            <Tab.Screen name="HomeScreen" component={HomeScreen} />
-            <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
-          </Tab.Navigator>
+          <HomeTab.Navigator>
+            <HomeTab.Screen name="HomeStack" component={HomeStackNavigator} />
+            <HomeTab.Screen name="ProfileScreen" component={ProfileScreen} />
+          </HomeTab.Navigator>
         ) : (
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen
