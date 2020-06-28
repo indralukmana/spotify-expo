@@ -28,9 +28,21 @@ const HomeTab = createBottomTabNavigator<HomeTabParamList>();
 
 const HomeStackNavigator = () => (
   <HomeStack.Navigator initialRouteName="HomeScreen">
-    <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-    <HomeStack.Screen name="PlaylistScreen" component={PlaylistScreen} />
-    <HomeStack.Screen name="TrackDetailScreen" component={TrackDetailScreen} />
+    <HomeStack.Screen
+      name="HomeScreen"
+      component={HomeScreen}
+      options={{ title: "Home" }}
+    />
+    <HomeStack.Screen
+      name="PlaylistScreen"
+      component={PlaylistScreen}
+      options={{ title: "Playlist" }}
+    />
+    <HomeStack.Screen
+      name="TrackDetailScreen"
+      component={TrackDetailScreen}
+      options={{ title: "Track Detail" }}
+    />
   </HomeStack.Navigator>
 );
 
