@@ -9,10 +9,9 @@ import {
   RootStackParamList,
   HomeStackParamList,
   HomeTabParamList,
-  AuthState,
-  AuthAction,
-  AuthActionTypes,
-} from "../types";
+} from "./navigationTypes";
+
+import { AuthState, AuthAction, AuthActionTypes } from "../types";
 
 import LinkingConfiguration from "./LinkingConfiguration";
 import LoginScreen from "../screens/LoginScreen";

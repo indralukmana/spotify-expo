@@ -9,10 +9,11 @@ import {
   Image,
 } from "react-native";
 import { getFeaturedPlaylists } from "../services/browse-api";
-import { FeaturedPlaylist, HomeStackParamList } from "../types";
+import { FeaturedPlaylist } from "../types";
 import { AuthContext } from "../Context/AuthenticationContext";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { StackScreenProps } from "@react-navigation/stack";
+import { HomeStackParamList } from "../navigation/navigationTypes";
 
 type HomeScreenProps = StackScreenProps<HomeStackParamList, "HomeScreen">;
 
@@ -65,7 +66,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   }, []);
 
   if (homeScreenState.isLoading) {
-    console.log({ homeScreenState });
     return (
       <View style={tailwind("flex-1 justify-center items-center")}>
         <ActivityIndicator />
@@ -75,12 +75,14 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   return (
     <SafeAreaView style={tailwind("flex-1 justify-center items-center")}>
-      <Text style={tailwind("font-bold mb-20")}>Spotify Expo Home</Text>
       <ScrollView style={tailwind("flex-1 w-full")}>
         {homeScreenState.data.map((playlist, index) => (
           <RectButton
+            key={playlist.id}
             onPress={() =>
-              navigation.navigate("PlaylistScreen", { playlistId: playlist.id })
+              navigation.navigate("PlaylistScreen", {
+                playlistId: playlist.id,
+              })
             }
             style={tailwind(
               `w-full py-10 px-5 ${
@@ -95,11 +97,12 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
                   <Text style={tailwind("font-bold")}>
                     {playlist.tracks.total}
                   </Text>
-                  <Text style={tailwind("ml-5")}>Songs</Text>
+                  <Text style={tailwind("ml-1")}>Songs</Text>
                 </View>
               </View>
               {playlist.images.map((image) => (
                 <Image
+                  key={image.url}
                   source={{
                     uri: image.url,
                     height: image.height ?? 100,

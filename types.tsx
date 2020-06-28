@@ -1,17 +1,3 @@
-export type RootStackParamList = {
-  LoginScreen: undefined;
-};
-
-export type HomeStackParamList = {
-  HomeScreen: undefined;
-  PlaylistScreen: { playlistId: string };
-};
-
-export type HomeTabParamList = {
-  HomeStack: undefined;
-  ProfileScreen: undefined;
-};
-
 export enum AuthActionTypes {
   LOG_IN = "LOG_IN",
   LOG_OUT = "LOG_OUT",
@@ -75,6 +61,63 @@ export type FeaturedPlaylist = {
     href: string;
     total: number;
   };
+  type: string;
+  uri: string;
+};
+
+export type Artist = {
+  external_urls: {
+    spotify: string;
+  };
+  spotify: string;
+  href: string;
+  id: string;
+  name: string;
+  type: string;
+  uri: string;
+};
+
+export type Album = {
+  album_type: string;
+  artists: Artist[];
+  available_markets: string[];
+  external_urls: {
+    spotify: string;
+  };
+  spotify: string;
+  href: string;
+  id: string;
+  images: Image[];
+  name: string;
+  release_date: string;
+  release_date_precision: string;
+  total_tracks: number;
+  type: string;
+  uri: string;
+};
+
+export type Track = {
+  album: Album;
+  artists: Artist[];
+  available_markets: string[];
+  disc_number: number;
+  duration_ms: number;
+  episode: boolean;
+  explicit: boolean;
+  external_ids: { isrc: string };
+  isrc: string;
+  external_urls: {
+    spotify: string;
+  };
+  spotify: string;
+  href: string;
+  id: string;
+  is_local: boolean;
+  name: string;
+  popularity: number;
+  preview_url: string;
+  track: boolean;
+  track_number: number;
   type: string;
   uri: string;
 };
