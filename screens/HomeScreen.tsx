@@ -1,7 +1,13 @@
 import * as React from "react";
 import tailwind from "tailwind-rn";
 
-import { View, Text, ActivityIndicator, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  SafeAreaView,
+  Image,
+} from "react-native";
 import { getFeaturedPlaylists } from "../services/browse-api";
 import { FeaturedPlaylist } from "../types";
 import { AuthContext } from "../Context/AuthenticationContext";
@@ -68,10 +74,33 @@ export default function HomeScreen() {
     <SafeAreaView style={tailwind("flex-1 justify-center items-center")}>
       <Text style={tailwind("font-bold mb-20")}>Spotify Expo Home</Text>
       <ScrollView style={tailwind("flex-1 w-full")}>
-        {homeScreenState.data.map((playlist) => (
-          <RectButton style={tailwind("w-full py-10 px-5")}>
-            <View accessible>
-              <Text>{playlist.name}</Text>
+        {homeScreenState.data.map((playlist, index) => (
+          <RectButton
+            style={tailwind(
+              `w-full py-10 px-5 ${
+                index % 2 === 0 ? "bg-blue-200" : "bg-yellow-200"
+              }`
+            )}
+          >
+            <View style={tailwind("flex-row justify-between")} accessible>
+              <View>
+                <Text style={tailwind("text-lg")}>{playlist.name}</Text>
+                <View style={tailwind("flex-row mt-5")}>
+                  <Text style={tailwind("font-bold")}>
+                    {playlist.tracks.total}
+                  </Text>
+                  <Text style={tailwind("ml-5")}>Songs</Text>
+                </View>
+              </View>
+              {playlist.images.map((image) => (
+                <Image
+                  source={{
+                    uri: image.url,
+                    height: image.height ?? 100,
+                    width: image.width ?? 100,
+                  }}
+                />
+              ))}
             </View>
           </RectButton>
         ))}
