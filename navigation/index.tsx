@@ -104,8 +104,16 @@ export default function Navigation() {
       <NavigationContainer linking={LinkingConfiguration}>
         {authState.spotifyToken ? (
           <HomeTab.Navigator>
-            <HomeTab.Screen name="HomeStack" component={HomeStackNavigator} />
-            <HomeTab.Screen name="ProfileScreen" component={ProfileScreen} />
+            <HomeTab.Screen
+              name="HomeStack"
+              component={HomeStackNavigator}
+              options={{ title: "Home" }}
+            />
+            <HomeTab.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
+              options={{ title: "Profile" }}
+            />
           </HomeTab.Navigator>
         ) : (
           <Stack.Navigator screenOptions={{ headerShown: false }}>
