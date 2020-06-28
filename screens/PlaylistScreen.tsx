@@ -20,7 +20,10 @@ type PlaylistScreenProps = StackScreenProps<
   "PlaylistScreen"
 >;
 
-export default function PlaylistScreen({ route }: PlaylistScreenProps) {
+export default function PlaylistScreen({
+  navigation,
+  route,
+}: PlaylistScreenProps) {
   const { authState } = React.useContext(AuthContext);
   const initialState = {
     isLoading: true,
@@ -95,6 +98,14 @@ export default function PlaylistScreen({ route }: PlaylistScreenProps) {
                 index % 2 === 0 ? "bg-blue-200" : "bg-yellow-200"
               }`
             )}
+            onPress={() =>
+              navigation.navigate("TrackDetailScreen", {
+                album: track.album,
+                artists: track.artists,
+                duration: track.duration_ms,
+                name: track.name,
+              })
+            }
           >
             <View
               style={tailwind("flex-row w-full justify-between")}

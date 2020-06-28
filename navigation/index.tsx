@@ -20,6 +20,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import { getProfile } from "../services/user-api";
 import { AuthContext } from "../Context/AuthenticationContext";
 import PlaylistScreen from "../screens/PlaylistScreen";
+import TrackDetailScreen from "../screens/TrackDetailScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const HomeStack = createStackNavigator<HomeStackParamList>();
@@ -29,6 +30,7 @@ const HomeStackNavigator = () => (
   <HomeStack.Navigator initialRouteName="HomeScreen">
     <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
     <HomeStack.Screen name="PlaylistScreen" component={PlaylistScreen} />
+    <HomeStack.Screen name="TrackDetailScreen" component={TrackDetailScreen} />
   </HomeStack.Navigator>
 );
 
