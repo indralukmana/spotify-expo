@@ -30,52 +30,64 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     data: FeaturedPlaylist[];
   }>(initialState);
 
+  const loadData = React.useCallback(async () => {
+    if (!authState.spotifyToken || !authState.userData?.country) {
+      return;
+    }
+
+    try {
+      setHomeScreenState(initialState);
+
+      const featuredPlaylists = await getFeaturedPlaylists(
+        authState.spotifyToken,
+        authState.userData?.country,
+        20
+      );
+
+      setHomeScreenState((prevState) => ({
+        ...prevState,
+        data: featuredPlaylists,
+      }));
+    } catch (error) {
+      setHomeScreenState((prevState) => ({ ...prevState, error }));
+    } finally {
+      setHomeScreenState((prevState) => ({ ...prevState, isLoading: false }));
+    }
+  }, [authState]);
+
   React.useEffect(() => {
     let mounted = true;
-
-    const loadData = async () => {
-      if (!authState.spotifyToken || !authState.userData?.country) {
-        return;
-      }
-
-      try {
-        setHomeScreenState(initialState);
-
-        const featuredPlaylists = await getFeaturedPlaylists(
-          authState.spotifyToken,
-          authState.userData?.country,
-          20
-        );
-
-        setHomeScreenState((prevState) => ({
-          ...prevState,
-          data: featuredPlaylists,
-        }));
-      } catch (error) {
-        setHomeScreenState((prevState) => ({ ...prevState, error }));
-      } finally {
-        setHomeScreenState((prevState) => ({ ...prevState, isLoading: false }));
-      }
-    };
 
     loadData();
 
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [loadData]);
 
   if (homeScreenState.isLoading) {
     return (
       <View style={tailwind("flex-1 justify-center items-center")}>
-        <ActivityIndicator />
+        <ActivityIndicator accessibilityLabel="loading" />
+      </View>
+    );
+  }
+
+  if (!homeScreenState.isLoading && homeScreenState.error) {
+    return (
+      <View style={tailwind("flex-1 justify-center items-center")}>
+        <Text>Error</Text>
+        <Text>{homeScreenState.error.message}</Text>
       </View>
     );
   }
 
   return (
     <SafeAreaView style={tailwind("flex-1 justify-center items-center")}>
-      <ScrollView style={tailwind("flex-1 w-full")}>
+      <ScrollView
+        style={tailwind("flex-1 w-full")}
+        accessibilityLabel="home view"
+      >
         {homeScreenState.data.map((playlist, index) => (
           <RectButton
             key={playlist.id}
