@@ -38,8 +38,7 @@ export default function LoginScreen() {
       usePKCE: false,
       redirectUri: makeRedirectUri({
         native: "https://auth.expo.io/@indralukmana/spotify-app",
-        useProxy: false,
-        preferLocalhost: true,
+        useProxy: true,
       }),
     },
     discovery
@@ -77,7 +76,7 @@ export default function LoginScreen() {
   return (
     <View style={tailwind("flex-1 justify-center items-center")}>
       <Text style={tailwind("font-bold mb-20")}>Spotify Expo</Text>
-      <Button title="Log In" onPress={() => promptAsync({ useProxy: false })} />
+      <Button title="Log In" onPress={() => promptAsync({ useProxy: true })} />
     </View>
   );
 }
