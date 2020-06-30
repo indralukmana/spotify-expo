@@ -1,9 +1,9 @@
-import { ErrorObject } from "./services-types";
-import { UserData } from "../types";
+import { ErrorObject } from './services-types';
+import { UserData } from '../types';
 
 export const getProfile = async (spotifyToken: string): Promise<UserData> => {
   try {
-    const profileResponse = await fetch("https://api.spotify.com/v1/me", {
+    const profileResponse = await fetch('https://api.spotify.com/v1/me', {
       headers: {
         Authorization: `Bearer ${spotifyToken}`,
       },

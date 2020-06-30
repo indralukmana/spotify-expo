@@ -1,25 +1,25 @@
-import * as React from "react";
-import tailwind from "tailwind-rn";
+import * as React from 'react';
+import tailwind from 'tailwind-rn';
 
-import * as WebBrowser from "expo-web-browser";
-import * as SecureStore from "expo-secure-store";
+import * as WebBrowser from 'expo-web-browser';
+import * as SecureStore from 'expo-secure-store';
 
 import {
   makeRedirectUri,
   useAuthRequest,
   ResponseType,
-} from "expo-auth-session";
+} from 'expo-auth-session';
 
-import { Platform, View, Text, Button } from "react-native";
-import { getProfile } from "../services/user-api";
-import { AuthActionTypes } from "../types";
-import { AuthContext } from "../Context/AuthenticationContext";
+import { Platform, View, Text, Button } from 'react-native';
+import { getProfile } from '../services/user-api';
+import { AuthActionTypes } from '../types';
+import { AuthContext } from '../Context/AuthenticationContext';
 
 WebBrowser.maybeCompleteAuthSession();
 
 // Endpoint
 const discovery = {
-  authorizationEndpoint: "https://accounts.spotify.com/authorize",
+  authorizationEndpoint: 'https://accounts.spotify.com/authorize',
 };
 
 export default function LoginScreen() {
@@ -29,18 +29,18 @@ export default function LoginScreen() {
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
-      clientId: "d949b5b3d39a4b88b79564b5312971f1",
+      clientId: 'd949b5b3d39a4b88b79564b5312971f1',
       scopes: [
-        "user-read-email",
-        "playlist-modify-public",
-        "user-read-private",
+        'user-read-email',
+        'playlist-modify-public',
+        'user-read-private',
       ],
       usePKCE: false,
       redirectUri: makeRedirectUri({
-        native: "spotifyexpo://redirect",
+        native: 'spotifyexpo://redirect',
       }),
     },
-    discovery
+    discovery,
   );
 
   React.useEffect(() => {
@@ -59,10 +59,10 @@ export default function LoginScreen() {
       }
     };
 
-    if (mounted && response && response.type === "success") {
+    if (mounted && response && response.type === 'success') {
       const spotifyToken = response.params.access_token;
-      if (Platform.OS !== "web") {
-        SecureStore.setItemAsync("spotify_token", spotifyToken);
+      if (Platform.OS !== 'web') {
+        SecureStore.setItemAsync('spotify_token', spotifyToken);
       }
       doLogin(spotifyToken);
     }
@@ -73,8 +73,8 @@ export default function LoginScreen() {
   }, [response]);
 
   return (
-    <View style={tailwind("flex-1 justify-center items-center")}>
-      <Text style={tailwind("font-bold mb-20")}>Spotify Expo</Text>
+    <View style={tailwind('flex-1 justify-center items-center')}>
+      <Text style={tailwind('font-bold mb-20')}>Spotify Expo</Text>
       <Button title="Log In" onPress={() => promptAsync({ useProxy: false })} />
       {/* <Text>
         {makeRedirectUri({

@@ -1,4 +1,4 @@
-import { Artist, Album } from "../types";
+import { Artist, Album } from '../types';
 
 export type RootStackParamList = {
   LoginScreen: undefined;

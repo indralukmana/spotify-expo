@@ -1,5 +1,5 @@
-import * as React from "react";
-import tailwind from "tailwind-rn";
+import * as React from 'react';
+import tailwind from 'tailwind-rn';
 
 import {
   View,
@@ -7,15 +7,15 @@ import {
   ActivityIndicator,
   SafeAreaView,
   Image,
-} from "react-native";
-import { getFeaturedPlaylists } from "../services/browse-api";
-import { FeaturedPlaylist } from "../types";
-import { AuthContext } from "../Context/AuthenticationContext";
-import { RectButton, ScrollView } from "react-native-gesture-handler";
-import { StackScreenProps } from "@react-navigation/stack";
-import { HomeStackParamList } from "../navigation/navigationTypes";
+} from 'react-native';
+import { getFeaturedPlaylists } from '../services/browse-api';
+import { FeaturedPlaylist } from '../types';
+import { AuthContext } from '../Context/AuthenticationContext';
+import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { StackScreenProps } from '@react-navigation/stack';
+import { HomeStackParamList } from '../navigation/navigationTypes';
 
-type HomeScreenProps = StackScreenProps<HomeStackParamList, "HomeScreen">;
+type HomeScreenProps = StackScreenProps<HomeStackParamList, 'HomeScreen'>;
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
   const { authState } = React.useContext(AuthContext);
@@ -41,7 +41,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       const featuredPlaylists = await getFeaturedPlaylists(
         authState.spotifyToken,
         authState.userData?.country,
-        20
+        20,
       );
 
       setHomeScreenState((prevState) => ({
@@ -67,7 +67,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   if (homeScreenState.isLoading) {
     return (
-      <View style={tailwind("flex-1 justify-center items-center")}>
+      <View style={tailwind('flex-1 justify-center items-center')}>
         <ActivityIndicator accessibilityLabel="loading" />
       </View>
     );
@@ -75,7 +75,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   if (!homeScreenState.isLoading && homeScreenState.error) {
     return (
-      <View style={tailwind("flex-1 justify-center items-center")}>
+      <View style={tailwind('flex-1 justify-center items-center')}>
         <Text>Error</Text>
         <Text>{homeScreenState.error.message}</Text>
       </View>
@@ -83,33 +83,33 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   }
 
   return (
-    <SafeAreaView style={tailwind("flex-1 justify-center items-center")}>
+    <SafeAreaView style={tailwind('flex-1 justify-center items-center')}>
       <ScrollView
-        style={tailwind("flex-1 w-full")}
+        style={tailwind('flex-1 w-full')}
         accessibilityLabel="home view"
       >
         {homeScreenState.data.map((playlist, index) => (
           <RectButton
             key={playlist.id}
             onPress={() =>
-              navigation.navigate("PlaylistScreen", {
+              navigation.navigate('PlaylistScreen', {
                 playlistId: playlist.id,
               })
             }
             style={tailwind(
               `w-full py-10 px-5 ${
-                index % 2 === 0 ? "bg-blue-200" : "bg-yellow-200"
-              }`
+                index % 2 === 0 ? 'bg-blue-200' : 'bg-yellow-200'
+              }`,
             )}
           >
-            <View style={tailwind("flex-row justify-between")} accessible>
+            <View style={tailwind('flex-row justify-between')} accessible>
               <View>
-                <Text style={tailwind("text-lg")}>{playlist.name}</Text>
-                <View style={tailwind("flex-row mt-5")}>
-                  <Text style={tailwind("font-bold")}>
+                <Text style={tailwind('text-lg')}>{playlist.name}</Text>
+                <View style={tailwind('flex-row mt-5')}>
+                  <Text style={tailwind('font-bold')}>
                     {playlist.tracks.total}
                   </Text>
-                  <Text style={tailwind("ml-1")}>Songs</Text>
+                  <Text style={tailwind('ml-1')}>Songs</Text>
                 </View>
               </View>
               {playlist.images.map((image) => (

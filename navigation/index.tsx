@@ -1,26 +1,26 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import * as React from "react";
-import * as SecureStore from "expo-secure-store";
+import * as React from 'react';
+import * as SecureStore from 'expo-secure-store';
 
 import {
   RootStackParamList,
   HomeStackParamList,
   HomeTabParamList,
-} from "./navigationTypes";
+} from './navigationTypes';
 
-import { AuthState, AuthAction, AuthActionTypes } from "../types";
+import { AuthState, AuthAction, AuthActionTypes } from '../types';
 
-import LinkingConfiguration from "./LinkingConfiguration";
-import LoginScreen from "../screens/LoginScreen";
-import HomeScreen from "../screens/HomeScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import { getProfile } from "../services/user-api";
-import { AuthContext } from "../Context/AuthenticationContext";
-import PlaylistScreen from "../screens/PlaylistScreen";
-import TrackDetailScreen from "../screens/TrackDetailScreen";
+import LinkingConfiguration from './LinkingConfiguration';
+import LoginScreen from '../screens/LoginScreen';
+import HomeScreen from '../screens/HomeScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import { getProfile } from '../services/user-api';
+import { AuthContext } from '../Context/AuthenticationContext';
+import PlaylistScreen from '../screens/PlaylistScreen';
+import TrackDetailScreen from '../screens/TrackDetailScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const HomeStack = createStackNavigator<HomeStackParamList>();
@@ -31,17 +31,17 @@ const HomeStackNavigator = () => (
     <HomeStack.Screen
       name="HomeScreen"
       component={HomeScreen}
-      options={{ title: "Home" }}
+      options={{ title: 'Home' }}
     />
     <HomeStack.Screen
       name="PlaylistScreen"
       component={PlaylistScreen}
-      options={{ title: "Playlist" }}
+      options={{ title: 'Playlist' }}
     />
     <HomeStack.Screen
       name="TrackDetailScreen"
       component={TrackDetailScreen}
-      options={{ title: "Track Detail" }}
+      options={{ title: 'Track Detail' }}
     />
   </HomeStack.Navigator>
 );
@@ -71,7 +71,7 @@ export default function Navigation() {
           };
       }
     },
-    initialAuthState
+    initialAuthState,
   );
 
   React.useEffect(() => {
@@ -80,7 +80,7 @@ export default function Navigation() {
       let userData = null;
 
       try {
-        spotifyToken = await SecureStore.getItemAsync("spotify_token");
+        spotifyToken = await SecureStore.getItemAsync('spotify_token');
         if (spotifyToken) {
           userData = await getProfile(spotifyToken);
         }
@@ -107,12 +107,12 @@ export default function Navigation() {
             <HomeTab.Screen
               name="HomeStack"
               component={HomeStackNavigator}
-              options={{ title: "Home" }}
+              options={{ title: 'Home' }}
             />
             <HomeTab.Screen
               name="ProfileScreen"
               component={ProfileScreen}
-              options={{ title: "Profile" }}
+              options={{ title: 'Profile' }}
             />
           </HomeTab.Navigator>
         ) : (
@@ -120,7 +120,7 @@ export default function Navigation() {
             <Stack.Screen
               name="LoginScreen"
               component={LoginScreen}
-              options={{ title: "Login" }}
+              options={{ title: 'Login' }}
             />
           </Stack.Navigator>
         )}

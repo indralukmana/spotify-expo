@@ -1,5 +1,5 @@
-import * as React from "react";
-import tailwind from "tailwind-rn";
+import * as React from 'react';
+import tailwind from 'tailwind-rn';
 
 import {
   View,
@@ -7,17 +7,17 @@ import {
   ActivityIndicator,
   SafeAreaView,
   Image,
-} from "react-native";
-import { getPlaylistItems } from "../services/browse-api";
-import { Track } from "../types";
-import { AuthContext } from "../Context/AuthenticationContext";
-import { RectButton, ScrollView } from "react-native-gesture-handler";
-import { StackScreenProps } from "@react-navigation/stack";
-import { HomeStackParamList } from "../navigation/navigationTypes";
+} from 'react-native';
+import { getPlaylistItems } from '../services/browse-api';
+import { Track } from '../types';
+import { AuthContext } from '../Context/AuthenticationContext';
+import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { StackScreenProps } from '@react-navigation/stack';
+import { HomeStackParamList } from '../navigation/navigationTypes';
 
 type PlaylistScreenProps = StackScreenProps<
   HomeStackParamList,
-  "PlaylistScreen"
+  'PlaylistScreen'
 >;
 
 export default function PlaylistScreen({
@@ -49,7 +49,7 @@ export default function PlaylistScreen({
 
         const playlistItems = await getPlaylistItems(
           authState.spotifyToken,
-          route.params.playlistId
+          route.params.playlistId,
         );
 
         setPlaylistScreenState((prevState) => ({
@@ -75,31 +75,31 @@ export default function PlaylistScreen({
 
   if (playlistScreenState.isLoading) {
     return (
-      <View style={tailwind("flex-1 justify-center items-center")}>
+      <View style={tailwind('flex-1 justify-center items-center')}>
         <ActivityIndicator />
       </View>
     );
   }
 
   if (playlistScreenState.error) {
-    <View style={tailwind("flex-1 justify-center items-center")}>
+    <View style={tailwind('flex-1 justify-center items-center')}>
       <Text>{playlistScreenState.error.message}</Text>
     </View>;
   }
 
   return (
-    <SafeAreaView style={tailwind("flex-1 justify-center items-center")}>
-      <ScrollView style={tailwind("flex-1 w-full")}>
+    <SafeAreaView style={tailwind('flex-1 justify-center items-center')}>
+      <ScrollView style={tailwind('flex-1 w-full')}>
         {playlistScreenState.data.map((track, index) => (
           <RectButton
             key={track.id}
             style={tailwind(
               `w-full py-10 px-5 ${
-                index % 2 === 0 ? "bg-blue-200" : "bg-yellow-200"
-              }`
+                index % 2 === 0 ? 'bg-blue-200' : 'bg-yellow-200'
+              }`,
             )}
             onPress={() =>
-              navigation.navigate("TrackDetailScreen", {
+              navigation.navigate('TrackDetailScreen', {
                 album: track.album,
                 artists: track.artists,
                 duration: track.duration_ms,
@@ -108,18 +108,18 @@ export default function PlaylistScreen({
             }
           >
             <View
-              style={tailwind("flex-row w-full justify-between")}
+              style={tailwind('flex-row w-full justify-between')}
               accessible
             >
-              <View style={tailwind("flex-wrap")}>
-                <Text style={tailwind("text-lg flex-wrap")}>{track.name}</Text>
-                <View style={tailwind("flex-row mt-5")}>
-                  <Text style={tailwind("font-bold")}>
+              <View style={tailwind('flex-wrap')}>
+                <Text style={tailwind('text-lg flex-wrap')}>{track.name}</Text>
+                <View style={tailwind('flex-row mt-5')}>
+                  <Text style={tailwind('font-bold')}>
                     {track.popularity}
-                    {"/100"}
+                    {'/100'}
                   </Text>
                 </View>
-                <Text style={tailwind("mt-3")}>Artist:</Text>
+                <Text style={tailwind('mt-3')}>Artist:</Text>
                 {track.artists.map((artist) => (
                   <Text key={artist.id}>{artist.name}</Text>
                 ))}

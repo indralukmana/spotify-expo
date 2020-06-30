@@ -1,9 +1,9 @@
-import { FeaturedPlaylist, Track } from "../types";
+import { FeaturedPlaylist, Track } from '../types';
 
 export const getFeaturedPlaylists = async (
   spotifyToken: string,
   country: string,
-  limit: number
+  limit: number,
 ): Promise<FeaturedPlaylist[]> => {
   try {
     const featuredPlaylistsResponse = await fetch(
@@ -12,7 +12,7 @@ export const getFeaturedPlaylists = async (
         headers: {
           Authorization: `Bearer ${spotifyToken}`,
         },
-      }
+      },
     );
     const featuredPlaylistsData = await featuredPlaylistsResponse.json();
     const playlists = featuredPlaylistsData.playlists;
@@ -25,7 +25,7 @@ export const getFeaturedPlaylists = async (
 
 export const getPlaylistItems = async (
   spotifyToken: string,
-  playlistId: string
+  playlistId: string,
 ): Promise<Track[]> => {
   try {
     const playlistItemsResponse = await fetch(
@@ -34,7 +34,7 @@ export const getPlaylistItems = async (
         headers: {
           Authorization: `Bearer ${spotifyToken}`,
         },
-      }
+      },
     );
     const playlistItemsData = await playlistItemsResponse.json();
     const playlistItems: Track[] = playlistItemsData.items
