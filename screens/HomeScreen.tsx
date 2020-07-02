@@ -22,7 +22,7 @@ export default function HomeScreen({
 }: HomeScreenProps): JSX.Element {
   const { authState } = React.useContext(AuthContext);
   const initialState = {
-    isLoading: true,
+    isLoading: false,
     error: null,
     data: [],
   };
@@ -38,7 +38,7 @@ export default function HomeScreen({
     }
 
     try {
-      setHomeScreenState(initialState);
+      setHomeScreenState((prevState) => ({ ...prevState, isLoading: true }));
 
       const featuredPlaylists = await getFeaturedPlaylists(
         authState.spotifyToken,
@@ -55,14 +55,16 @@ export default function HomeScreen({
     } finally {
       setHomeScreenState((prevState) => ({ ...prevState, isLoading: false }));
     }
-  }, [authState.spotifyToken, authState.userData?.country, initialState]);
+  }, [authState.spotifyToken, authState.userData?.country]);
 
   React.useEffect(() => {
     let mounted = true;
 
-    if (mounted) {
-      loadData();
+    if (!mounted) {
+      return;
     }
+
+    loadData();
 
     return () => {
       mounted = false;

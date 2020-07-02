@@ -23,7 +23,7 @@ type PlaylistScreenProps = StackScreenProps<
 export default function PlaylistScreen({
   navigation,
   route,
-}: PlaylistScreenProps) {
+}: PlaylistScreenProps): JSX.Element {
   const { authState } = React.useContext(AuthContext);
   const initialState = {
     isLoading: true,
@@ -36,42 +36,49 @@ export default function PlaylistScreen({
     data: Track[];
   }>(initialState);
 
+  const loadData = React.useCallback(async () => {
+    if (!authState.spotifyToken) {
+      return;
+    }
+
+    try {
+      setPlaylistScreenState((prevState) => ({
+        ...prevState,
+        isLoading: true,
+      }));
+
+      const playlistItems = await getPlaylistItems(
+        authState.spotifyToken,
+        route.params.playlistId,
+      );
+
+      setPlaylistScreenState((prevState) => ({
+        ...prevState,
+        data: playlistItems,
+      }));
+    } catch (error) {
+      setPlaylistScreenState((prevState) => ({ ...prevState, error }));
+    } finally {
+      setPlaylistScreenState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+      }));
+    }
+  }, [authState.spotifyToken, route.params.playlistId]);
+
   React.useEffect(() => {
     let mounted = true;
 
-    const loadData = async () => {
-      if (!authState.spotifyToken) {
-        return;
-      }
-
-      try {
-        setPlaylistScreenState(initialState);
-
-        const playlistItems = await getPlaylistItems(
-          authState.spotifyToken,
-          route.params.playlistId,
-        );
-
-        setPlaylistScreenState((prevState) => ({
-          ...prevState,
-          data: playlistItems,
-        }));
-      } catch (error) {
-        setPlaylistScreenState((prevState) => ({ ...prevState, error }));
-      } finally {
-        setPlaylistScreenState((prevState) => ({
-          ...prevState,
-          isLoading: false,
-        }));
-      }
-    };
+    if (!mounted) {
+      return;
+    }
 
     loadData();
 
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [loadData]);
 
   if (playlistScreenState.isLoading) {
     return (
