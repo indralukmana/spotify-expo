@@ -11,7 +11,9 @@ type TrackDetailScreenProps = StackScreenProps<
   'TrackDetailScreen'
 >;
 
-export default function TrackDetailScreen({ route }: TrackDetailScreenProps) {
+export default function TrackDetailScreen({
+  route,
+}: TrackDetailScreenProps): JSX.Element {
   const { name, album, artists, duration } = route.params;
 
   function durationConvert(ms: number) {

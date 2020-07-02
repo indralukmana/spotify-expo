@@ -5,7 +5,7 @@ import { View, Text, Button } from 'react-native';
 import { AuthActionTypes } from '../types';
 import { AuthContext } from '../Context/AuthenticationContext';
 
-export default function ProfileScreen() {
+export default function ProfileScreen(): JSX.Element {
   const { dispatchAuth, authState } = React.useContext(AuthContext);
 
   return (
