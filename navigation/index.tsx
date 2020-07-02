@@ -46,7 +46,7 @@ const HomeStackNavigator = () => (
   </HomeStack.Navigator>
 );
 
-export default function Navigation() {
+export default function Navigation(): JSX.Element {
   const initialAuthState: AuthState = {
     isLoading: false,
     spotifyToken: null,

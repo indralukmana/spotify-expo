@@ -17,7 +17,9 @@ import { HomeStackParamList } from '../navigation/navigationTypes';
 
 type HomeScreenProps = StackScreenProps<HomeStackParamList, 'HomeScreen'>;
 
-export default function HomeScreen({ navigation }: HomeScreenProps) {
+export default function HomeScreen({
+  navigation,
+}: HomeScreenProps): JSX.Element {
   const { authState } = React.useContext(AuthContext);
   const initialState = {
     isLoading: true,
@@ -53,12 +55,14 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     } finally {
       setHomeScreenState((prevState) => ({ ...prevState, isLoading: false }));
     }
-  }, [authState]);
+  }, [authState.spotifyToken, authState.userData?.country, initialState]);
 
   React.useEffect(() => {
     let mounted = true;
 
-    loadData();
+    if (mounted) {
+      loadData();
+    }
 
     return () => {
       mounted = false;
