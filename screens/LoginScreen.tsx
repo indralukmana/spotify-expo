@@ -50,17 +50,12 @@ export default function LoginScreen(): JSX.Element {
     discovery,
   );
 
-  React.useEffect(() => {
-    let mounted = true;
-
-    const doLogin = async (spotifyToken: string) => {
-      if (loginScreenState.isLoading) {
-        return;
-      }
+  const doLogin = React.useCallback(
+    async (spotifyToken: string, controller: AbortController) => {
       try {
         setLoginScreenState((prevState) => ({ ...prevState, isLoading: true }));
 
-        const userData = await getProfile(spotifyToken);
+        const userData = await getProfile(spotifyToken, controller);
         dispatchAuth({
           type: AuthActionTypes.LOG_IN,
           spotifyToken,
@@ -69,25 +64,34 @@ export default function LoginScreen(): JSX.Element {
       } catch (error) {
         setLoginScreenState((prevState) => ({ ...prevState, error }));
       } finally {
+        if (controller.signal.aborted) {
+          return;
+        }
         setLoginScreenState((prevState) => ({
           ...prevState,
           isLoading: false,
         }));
       }
-    };
+    },
+    [dispatchAuth],
+  );
 
-    if (mounted && response && response.type === 'success') {
+  React.useEffect(() => {
+    // eslint-disable-next-line no-undef
+    const controller = new AbortController();
+
+    if (response && response.type === 'success') {
       const spotifyToken = response.params.access_token;
       if (Platform.OS !== 'web') {
         SecureStore.setItemAsync('spotify_token', spotifyToken);
       }
-      doLogin(spotifyToken);
+      doLogin(spotifyToken, controller);
     }
 
     return () => {
-      mounted = false;
+      controller.abort();
     };
-  });
+  }, [doLogin, response]);
 
   if (loginScreenState.isLoading) {
     return (
